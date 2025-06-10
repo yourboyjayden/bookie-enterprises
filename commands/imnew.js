@@ -1,27 +1,31 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
   name: 'imnew',
-  description: 'Explains what to do when you join the server.',
-  async execute(message, args) {
-    // Skip if the user has admin permissions
-    if (message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
+  description: 'Sends the welcome embed for new members',
+  async execute(message) {
+    if (message.content.toLowerCase() !== '!imnew') return;
 
+    // Create the embed
     const embed = new EmbedBuilder()
-      .setTitle('Welcome to the Server!')
-      .setDescription(
-        'Here’s how to get started:\n' +
-        '📌 Check <#1377545637868077107> for important information\n' +
-        '✅ Use <#1376477770166702103> to verify your account\n' +
-        '🎉 Enjoy your stay!'
-      )
-      .setColor(0x00AE86);
+      .setTitle('New Members')
+      .setDescription('• Make sure to verify in <#1376477770166702103> to get access to the rest of the server!\n• Losses on tips provided by Bookie Enterprises will be compensated for up to $500k, provided the sufficient information is provided and the circumstance is rational.')
+      .setColor(0x1458f8)
+      .setAuthor({ name: 'Bookie Enterprises - Important Information', iconURL: 'https://i.postimg.cc/PfzvMdPs/Bookie-Enterprises-Logo.png' });
 
+    // Send embed to channel
     const sentMessage = await message.channel.send({ embeds: [embed] });
 
-    // Delete the message after 30 seconds
-    setTimeout(() => {
-      sentMessage.delete().catch(() => {});
-    }, 30000); // 30,000 ms = 30 seconds
-  }
+    // Check if user has the "Admin" role
+    const isAdmin = message.member.roles.cache.some(role => role.name.toLowerCase() === 'admin');
+
+    // If not admin, delete embed after 30 seconds
+    if (!isAdmin) {
+      setTimeout(() => {
+        sentMessage.delete().catch(() => {
+          // Ignore errors if message is already deleted
+        });
+      }, 30000);
+    }
+  },
 };
