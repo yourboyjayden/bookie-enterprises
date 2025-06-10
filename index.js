@@ -67,6 +67,29 @@ client.on('messageCreate', message => {
   }
 });
 
+client.commands = new Map();
+
+// Load all command files from 'commands' folder
+const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.name, command);
+}
+
+// Message event handler
+client.on('messageCreate', message => {
+  if (!message.content.startsWith('!') || message.author.bot) return;
+
+  const args = message.content.slice(1).trim().split(/ +/);
+  const commandName = args.shift().toLowerCase();
+
+  const command = client.commands.get(commandName);
+  if (command) {
+    command.execute(message, args);
+  }
+});
+
 const express = require('express');
 const app = express();
 
