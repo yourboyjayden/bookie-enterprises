@@ -47,15 +47,7 @@ client.on('messageCreate', message => {
 
     message.channel.send({ embeds: [embed] });
   }
-  if (message.content.toLowerCase() === '!imnew') {
-    const embed = new EmbedBuilder()
-      .setTitle('New Members')
-      .setDescription('• Make sure to verify in <#1376477770166702103> to get access to the rest of the server!\n• Losses on tips provided by Bookie Enterprises will be compensated for up to $500k, provided the sufficient information is provided and the circumstance is rational.')
-      .setColor(0x1458f8) // Same color as before
-      .setAuthor({ name: 'Bookie Enterprises - Important Information', iconURL: 'https://i.postimg.cc/PfzvMdPs/Bookie-Enterprises-Logo.png' });
 
-    message.channel.send({ embeds: [embed] });
-  }
   if (message.content.toLowerCase() === '!verifying') {
     const embed = new EmbedBuilder()
       .setTitle('Verifying')
