@@ -33,22 +33,6 @@ Check out <#${importantInfoChannelId}> for important information, and make sure 
   });
 });
 
-
-client.on('messageCreate', message => {
-  if (message.author.bot) return;
-
-
-  if (message.content.toLowerCase() === '!verifying') {
-    const embed = new EmbedBuilder()
-      .setTitle('Verifying')
-      .setDescription('Use `/v` in this channel to verify your account and gain access to the rest of the server if you haven\'t already been verified!')
-      .setColor(0x1458f8)
-      .setAuthor({ name: 'Bookie Enterprises - Important Information', iconURL: 'https://i.postimg.cc/PfzvMdPs/Bookie-Enterprises-Logo.png' });
-
-    message.channel.send({ embeds: [embed] });
-  }
-});
-
 client.commands = new Map();
 
 // Load all command files from 'commands' folder
