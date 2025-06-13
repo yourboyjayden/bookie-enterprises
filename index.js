@@ -68,3 +68,5 @@ app.listen(3000, () => {
 });
 
 client.login(process.env.TOKEN);
+
+require('./itempaymentwatcher.js');
