@@ -21,7 +21,6 @@ async function checkLogs() {
     for (const [logId, entry] of logEntries) {
       if (lastSeenLogId && parseInt(logId) <= lastSeenLogId) continue;
 
-      // Only process entries where item was sent to you and message matches
       if (
         entry?.type === 'item_send' &&
         entry?.data?.to_id === YOUR_TORN_ID &&
@@ -30,7 +29,32 @@ async function checkLogs() {
         const senderName = entry.data?.from_name;
         console.log(`[MATCH] ${senderName} sent item(s) with valid message.`);
 
-        // NEXT STEP: Assign role to this person on Discord...
+        const guild = client.guilds.cache.first(); // Get your single server
+        if (!guild) return console.log('❌ Bot is not in any guild.');
+
+        try {
+          await guild.members.fetch(); // Load all members
+          const member = guild.members.cache.find(m => {
+            if (!m.nickname) return false;
+            return m.nickname.startsWith(senderName + ' [');
+          });
+
+          if (member) {
+            const role = guild.roles.cache.find(r => r.name === 'Bookie+');
+            if (role && !member.roles.cache.has(role.id)) {
+              await member.roles.add(role);
+              console.log(`✅ Role 'Bookie+' assigned to ${member.nickname}`);
+            } else if (!role) {
+              console.log(`⚠️ Role 'Bookie+' not found in the guild`);
+            } else {
+              console.log(`ℹ️ ${member.nickname} already has the 'Bookie+' role`);
+            }
+          } else {
+            console.log(`❌ No matching Discord member found for Torn name: ${senderName}`);
+          }
+        } catch (err) {
+          console.error(`Error processing guild:`, err.message);
+        }
       }
 
       lastSeenLogId = parseInt(logId);
