@@ -1,4 +1,5 @@
 const axios = require('axios');
+const client = require('./index.js');
 
 const TORN_API_KEY = '3WCLYsxtRMhsQeLk';
 const YOUR_TORN_ID = 3218330;
