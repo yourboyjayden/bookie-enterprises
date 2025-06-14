@@ -22,9 +22,10 @@ async function checkLogs() {
       if (lastSeenLogId && parseInt(logId) <= lastSeenLogId) continue;
 
       if (
-        entry?.type === 'item_send' &&
-        entry?.data?.to_id === YOUR_TORN_ID &&
-        entry?.data?.message?.trim() === WATCHED_MESSAGE
+  entry?.type === 'item_send' &&
+  entry?.data?.to_id === YOUR_TORN_ID &&
+  entry?.data?.message?.trim() === WATCHED_MESSAGE &&
+  entry?.data?.item_name === 'Xanax'
       ) {
         const senderName = entry.data?.from_name;
         console.log(`[MATCH] ${senderName} sent item(s) with valid message.`);
