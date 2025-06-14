@@ -67,6 +67,8 @@ app.listen(3000, () => {
   console.log('Uptime server is running on port 3000');
 });
 
+module.exports = client;
+
 client.login(process.env.TOKEN);
 
 require('./itempaymentwatcher.js');
